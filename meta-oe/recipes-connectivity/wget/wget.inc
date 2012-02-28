@@ -2,7 +2,8 @@ DESCRIPTION = "A console URL download utility featuring HTTP, FTP, and more."
 SECTION = "console/network"
 LICENSE = "GPL"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
-INC_PR = "r10"
+INC_PR = "r11"
+DEPENDS = "openssl"
 
 S = "${WORKDIR}/wget-${PV}"
 
