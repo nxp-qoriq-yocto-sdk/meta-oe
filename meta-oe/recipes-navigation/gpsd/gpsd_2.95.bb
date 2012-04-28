@@ -5,6 +5,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d217a23f408e91c94359447735bc1800"
 DEPENDS = "dbus-glib ncurses python libusb1"
 PROVIDES = "virtual/gpsd"
 
+PR = "r1"
+
 EXTRA_OECONF = "--x-includes=${STAGING_INCDIR}/X11 \
                 --x-libraries=${STAGING_LIBDIR} \
                 --enable-dbus \
@@ -19,7 +21,7 @@ SRC_URI = "http://download.berlios.de/${PN}/${P}.tar.gz;name=gpsd \
 SRC_URI[gpsd.md5sum] = "12535a9ed9fecf9ea2c5bdc9840da5ae"
 SRC_URI[gpsd.sha256sum] = "832343a53921a8371efa540ba57c91dadedda445e571c1beb97c06539ef450ae"
 
-inherit autotools update-rc.d python-dir
+inherit autotools update-rc.d python-dir distutils
 
 INITSCRIPT_NAME = "gpsd"
 INITSCRIPT_PARAMS = "defaults 35"
