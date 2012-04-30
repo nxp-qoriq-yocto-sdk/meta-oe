@@ -1,6 +1,8 @@
 SECTION = "console/network"
 LICENSE = "GPL"
-DEPENDS = "readline virtual/libiconv talloc"
+DEPENDS = "readline virtual/libiconv talloc avahi"
+
+INC_PR = "r1"
 
 SRC_URI = "http://samba.org/samba/ftp/stable/samba-${PV}.tar.gz \
            file://volatiles.03_samba \
