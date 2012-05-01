@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d217a23f408e91c94359447735bc1800"
 DEPENDS = "dbus-glib ncurses python libusb1"
 PROVIDES = "virtual/gpsd"
 
-PR = "r1"
+PR = "r2"
 
 EXTRA_OECONF = "--x-includes=${STAGING_INCDIR}/X11 \
                 --x-libraries=${STAGING_LIBDIR} \
@@ -61,6 +61,13 @@ do_install_append() {
     install -m 0755 ${S}/gpsd.hotplug ${D}${base_libdir}/udev/
     install -d ${D}${base_libdir}/udev/
     install -m 0755 ${S}/gpsd.hotplug.wrapper ${D}${base_libdir}/udev/
+}
+
+do_install_append_powerpc64 () {
+    # move over python libs to lib64 in leui of fixing autotools
+    # since this recipe/package is depciated and newer versions use scons
+    rm -rf ${D}/usr/lib64
+    mv ${D}/usr/lib ${D}/usr/lib64
 }
 
 pkg_postinst_${PN}-conf() {
