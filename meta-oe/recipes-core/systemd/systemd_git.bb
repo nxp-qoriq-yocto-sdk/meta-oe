@@ -14,13 +14,14 @@ inherit gitpkgv
 PKGV = "v${GITPKGVTAG}"
 
 PV = "git"
-PR = "r28"
+PR = "r29"
 
 inherit useradd pkgconfig autotools vala perlnative
 
 SRCREV = "3eff4208ffecedd778fec260f0d4b18e94dab443"
 
 SRC_URI = "git://anongit.freedesktop.org/systemd/systemd;protocol=git \
+           file://use-rootlibdir.patch \
            ${UCLIBCPATCHES} \
            file://var-run.conf \
           "

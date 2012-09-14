@@ -1,0 +1,94 @@
+From 5210f67d0c637f4fbd8bb0a94e9b11da25a9c76c Mon Sep 17 00:00:00 2001
+From: Ting Liu <b28495@freescale.com>
+Date: Fri, 14 Sep 2012 16:56:30 +0800
+Subject: [PATCH] use rootlibdir
+
+Back port from meta-oe 980b338fb5100ff4c779335a86f3d9450ea8c54a.
+Below is the original message in the patch:
+
+Upstream-Status: Undecided
+
+This patch removes some of hardcoded references to /lib
+and /usr/lib since on some architectures it should be
+/lib64 and /usr/lib64 atleast in OE
+
+I am not sure about the intention of hardcoded values
+thats why status is undecided
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Ting Liu <b28495@freescale.com>
+---
+ Makefile.am |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 219d8de..b96ac74 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -50,19 +50,19 @@ bashcompletiondir=$(sysconfdir)/bash_completion.d
+ 
+ # Our own, non-special dirs
+ pkgsysconfdir=$(sysconfdir)/systemd
+-userunitdir=$(prefix)/lib/systemd/user
+-tmpfilesdir=$(prefix)/lib/tmpfiles.d
+-sysctldir=$(prefix)/lib/sysctl.d
++userunitdir=$(prefix)/$(rootlibdir)/gcsystemd/user
++tmpfilesdir=$(prefix)/$(rootlibdir)/gctmpfiles.d
++sysctldir=$(prefix)/$(rootlibdir)/gcsysctl.d
+ usergeneratordir=$(pkglibexecdir)/user-generators
+ pkgincludedir=$(includedir)/systemd
+ 
+ # And these are the special ones for /
+ rootprefix=@rootprefix@
+ rootbindir=$(rootprefix)/bin
+-rootlibexecdir=$(rootprefix)/lib/systemd
++rootlibexecdir=$(rootprefix)/$(rootlibdir)/gcsystemd
+ systemgeneratordir=$(rootlibexecdir)/system-generators
+ systemshutdowndir=$(rootlibexecdir)/system-shutdown
+-systemunitdir=$(rootprefix)/lib/systemd/system
++systemunitdir=$(rootprefix)/$(rootlibdir)/gcsystemd/system
+ 
+ CLEANFILES =
+ EXTRA_DIST =
+@@ -93,7 +93,7 @@ AM_CPPFLAGS = \
+ 	-DSYSTEMD_STDIO_BRIDGE_BINARY_PATH=\"$(bindir)/systemd-stdio-bridge\" \
+ 	-DROOTPREFIX=\"$(rootprefix)\" \
+ 	-DRUNTIME_DIR=\"/run\" \
+-	-DRANDOM_SEED=\"$(localstatedir)/lib/random-seed\" \
++	-DRANDOM_SEED=\"$(localstatedir)/$(rootlibdir)/gcrandom-seed\" \
+ 	-DSYSTEMD_CRYPTSETUP_PATH=\"$(rootlibexecdir)/systemd-cryptsetup\" \
+ 	-DSYSTEM_GENERATOR_PATH=\"$(systemgeneratordir)\" \
+ 	-DUSER_GENERATOR_PATH=\"$(usergeneratordir)\" \
+@@ -1408,7 +1408,7 @@ nodist_systemunit_DATA += \
+ 
+ binfmt-install-data-hook:
+ 	$(MKDIR_P) -m 0755 \
+-		$(DESTDIR)$(prefix)/lib/binfmt.d \
++		$(DESTDIR)$(prefix)/$(rootlibdir)/gcbinfmt.d \
+ 		$(DESTDIR)$(sysconfdir)/binfmt.d \
+ 		$(DESTDIR)$(systemunitdir)/sysinit.target.wants
+ 	( cd $(DESTDIR)$(systemunitdir)/sysinit.target.wants && \
+@@ -1940,7 +1940,7 @@ polkitpolicy_in_files += \
+ logind-install-data-hook:
+ 	$(MKDIR_P) -m 0755 \
+ 		$(DESTDIR)$(systemunitdir)/multi-user.target.wants \
+-                $(DESTDIR)$(localstatedir)/lib/systemd
++                $(DESTDIR)$(localstatedir)/$(rootlibdir)/gcsystemd
+ 	( cd $(DESTDIR)$(systemunitdir) && \
+ 		rm -f dbus-org.freedesktop.login1.service && \
+ 		$(LN_S) systemd-logind.service dbus-org.freedesktop.login1.service)
+@@ -2196,9 +2196,9 @@ systemd-install-data-hook:
+ 	$(MKDIR_P) -m 0755 \
+ 		$(DESTDIR)$(tmpfilesdir) \
+ 		$(DESTDIR)$(sysconfdir)/tmpfiles.d \
+-		$(DESTDIR)$(prefix)/lib/modules-load.d \
++		$(DESTDIR)$(prefix)/$(rootlibdir)/gcmodules-load.d \
+ 		$(DESTDIR)$(sysconfdir)/modules-load.d \
+-		$(DESTDIR)$(prefix)/lib/sysctl.d \
++		$(DESTDIR)$(prefix)/$(rootlibdir)/gcsysctl.d \
+ 		$(DESTDIR)$(sysconfdir)/sysctl.d \
+ 		$(DESTDIR)$(systemshutdowndir) \
+ 		$(DESTDIR)$(systemgeneratordir) \
+-- 
+1.7.5
+
