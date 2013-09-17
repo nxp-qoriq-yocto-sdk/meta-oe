@@ -23,6 +23,9 @@ S = "${WORKDIR}/netperf-${PV}"
 # cpu_set.patch plus _GNU_SOURCE makes src/netlib.c compile with CPU_ macros
 CFLAGS_append = " -DDO_UNIX -DDO_IPV6 -D_GNU_SOURCE"
 
+# set _FILE_OFFSET_BITS=64 to let sendfile support files larger than 2GB
+CFLAGS_append = " -D_FILE_OFFSET_BITS=64"
+
 # autotools.bbclass attends to include m4 files with path depth <= 2 by
 # "find ${S} -maxdepth 2 -name \*.m4", so move m4 files from m4/m4.
 do_configure_prepend() {
