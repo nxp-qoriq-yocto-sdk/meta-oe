@@ -24,6 +24,7 @@ CONFIGFILESURI_i586 = "file://config.h \
 
 CONFIGFILESURI_powerpc = "file://ppc/config.h \
        file://ppc/numpyconfig.h \
+"
 
 CONFIGFILESURI_powerpc64 = "file://ppc64/config.h \
        file://ppc64/_numpyconfig.h \
