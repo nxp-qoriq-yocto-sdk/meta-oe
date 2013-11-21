@@ -1,0 +1,72 @@
+From d2dba36b797f64c7624c4f11b258dfa343733644 Mon Sep 17 00:00:00 2001
+From: Radu Bulie <radu.bulie@freescale.com>
+Date: Wed, 20 Nov 2013 09:56:39 +0000
+Subject: [PATCH] Add fix when checking the wiping of cryptographic sensitive
+ material from memory
+
+Signed-off-by: Radu Bulie <radu.bulie@freescale.com>
+---
+ src/libstrongswan/library.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/src/libstrongswan/library.c b/src/libstrongswan/library.c
+index 4dec612..14dd2e1 100644
+--- a/src/libstrongswan/library.c
++++ b/src/libstrongswan/library.c
+@@ -150,19 +150,21 @@ static bool equals(char *a, char *b)
+ 	return streq(a, b);
+ }
+ 
++#define MEMWIPE_WIPE_WORDS 16
++#define MEMWIPE_CHECK_WORDS (MEMWIPE_WIPE_WORDS * 2)
++
+ /**
+  * Write magic to memory, and try to clear it with memwipe()
+  */
+ __attribute__((noinline))
+-static void do_magic(int magic, int **stack)
++static void do_magic(int *magic, int **stack)
+ {
+-	int buf[32], i;
+-
++	int buf[MEMWIPE_WIPE_WORDS], i;
+ 	/* tell caller where callee stack is (but don't point to buf) */
+ 	*stack = &i;
+ 	for (i = 0; i < countof(buf); i++)
+ 	{
+-		buf[i] = magic;
++		buf[i] = *magic;
+ 	}
+ 	/* passing buf to dbg should make sure the compiler can't optimize out buf.
+ 	 * we use directly dbg(3), as DBG3() might be stripped with DEBUG_LEVEL. */
+@@ -177,18 +179,25 @@ static bool check_memwipe()
+ {
+ 	int magic = 0xCAFEBABE, *ptr, *deeper, i, stackdir = 1;
+ 
+-	do_magic(magic, &deeper);
++	do_magic(&magic, &deeper);
+ 
+ 	ptr = &magic;
+ 	if (deeper < ptr)
+ 	{	/* stack grows down */
+ 		stackdir = -1;
+ 	}
+-	for (i = 0; i < 128; i++)
++	for (i = 0; i < MEMWIPE_CHECK_WORDS; i++)
+ 	{
+ 		ptr = ptr + stackdir;
+ 		if (*ptr == magic)
+ 		{
++			ptr = &magic + stackdir;
++			if (stackdir == -1)
++			{
++				ptr -= MEMWIPE_CHECK_WORDS;
++			}
++			DBG1(DBG_LIB, "memwipe() check failed: stackdir: %d %b",
++				 stackdir, ptr, (u_int)(MEMWIPE_CHECK_WORDS * sizeof(int)));
+ 			return FALSE;
+ 		}
+ 	}
+-- 
+1.8.1.4
+
