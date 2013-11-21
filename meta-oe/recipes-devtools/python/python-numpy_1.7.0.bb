@@ -22,12 +22,12 @@ CONFIGFILESURI_i586 = "file://config.h \
                        file://numpyconfig.h \
 "
 
-CONFIGFILESURI_powerpc = "file://ppc/config.h \
-       file://ppc/numpyconfig.h \
+CONFIGFILESURI_powerpc = "file://config.h \
+       file://numpyconfig.h \
 "
 
-CONFIGFILESURI_powerpc64 = "file://ppc64/config.h \
-       file://ppc64/_numpyconfig.h \
+CONFIGFILESURI_powerpc64 = "file://config.h \
+       file://_numpyconfig.h \
 "
 
 S = "${WORKDIR}/numpy-${PV}"
@@ -40,7 +40,7 @@ do_compile_prepend() {
     BUILD_SYS=${BUILD_SYS} HOST_SYS=${HOST_SYS} \
     ${STAGING_BINDIR_NATIVE}/python-native/python setup.py build ${DISTUTILS_BUILD_ARGS} || \
     true
-    cp ${WORKDIR}/*/*config.h ${S}/build/$(ls ${S}/build | grep src)/numpy/core/include/numpy/
+    cp ${WORKDIR}/*config.h ${S}/build/$(ls ${S}/build | grep src)/numpy/core/include/numpy/
 }
 
 FILES_${PN}-staticdev += "${PYTHON_SITEPACKAGES_DIR}/numpy/core/lib/*.a"
