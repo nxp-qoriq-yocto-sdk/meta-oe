@@ -37,8 +37,10 @@ do_install () {
     install -m 644 ${WORKDIR}/dnsmasq.conf ${D}${sysconfdir}/
     install -m 755 ${WORKDIR}/init ${D}${sysconfdir}/init.d/dnsmasq
 
-    install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/dnsmasq.service ${D}${systemd_unitdir}/system
+    if ${@base_contains('DISTRO_FEATURES','systemd','true','false',d)}; then
+        install -d ${D}${systemd_unitdir}/system
+        install -m 0644 ${WORKDIR}/dnsmasq.service ${D}${systemd_unitdir}/system
+    fi
 
     install -m 0755 ${S}/contrib/wrt/dhcp_release ${D}${bindir}
 
