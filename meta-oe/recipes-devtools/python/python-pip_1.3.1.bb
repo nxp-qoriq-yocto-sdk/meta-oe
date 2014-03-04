@@ -1,5 +1,5 @@
 SUMMARY = "PIP is a tool for installing and managing Python packages"
-LICENSE = "MIT & GPL"
+LICENSE = "MIT & LGPL-2.1"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=cd00425a3465a0e4c81929b94241d3de"
 
 SRC_URI = "https://pypi.python.org/packages/source/p/pip/pip-${PV}.tar.gz"
