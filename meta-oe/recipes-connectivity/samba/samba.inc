@@ -44,6 +44,7 @@ PACKAGECONFIG = "${@base_contains('DISTRO_FEATURES', 'pam', 'pam', '', d)}"
 PACKAGECONFIG[pam] = "--with-pam,--without-pam,libpam"
 PACKAGECONFIG[fam] = "--enable-fam,--disable-fam,gamin"
 PACKAGECONFIG[talloc] = "--with-libtalloc,--without-libtalloc,talloc"
+PACKAGECONFIG[valgrind] = "ac_cv_header_valgrind_valgrind_h=yes ac_cv_header_valgrind_memcheck_h=yes,ac_cv_header_valgrind_valgrind_h=no ac_cv_header_valgrind_memcheck_h=no,valgrind"
 
 INITSCRIPT_PACKAGES = "samba winbind"
 INITSCRIPT_NAME_samba = "samba"
