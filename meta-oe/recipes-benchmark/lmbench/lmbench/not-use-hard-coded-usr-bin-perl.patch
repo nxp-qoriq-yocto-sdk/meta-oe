@@ -1,0 +1,26 @@
+From 779e8aab2e3a751deab22a27758ee516e503a080 Mon Sep 17 00:00:00 2001
+From: Ting Liu <ting.liu@freescale.com>
+Date: Fri, 9 May 2014 01:43:44 -0500
+Subject: [PATCH] not use hard coded /usr/bin/perl
+
+use the same way like other scripts
+
+Signed-off-by: Ting Liu <ting.liu@freescale.com>
+---
+ scripts/getresults |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/getresults b/scripts/getresults
+index c5665b5..e32974a 100755
+--- a/scripts/getresults
++++ b/scripts/getresults
+@@ -1,4 +1,5 @@
+-#!/usr/bin/perl -ws
++eval 'exec perl -Sws $0 "$@"'
++    if 0;
+ 
+ # Search through the archives splitting out stuff that has pathnames.
+ 
+-- 
+1.7.9.7
+
