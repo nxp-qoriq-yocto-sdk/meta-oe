@@ -24,7 +24,7 @@ do_configure () {
 do_install_prepend() {
     # Hack the way swig interface for talloc is installed
     # This hack is accompanied by install-swig-interface-in-SWINGLIBDIR.patch
-    type swig > /dev/null 2>&1 && SWIGLIBDIR=`swig -swiglib` && SWIGLIBDIR=${SWIGLIBDIR##${STAGING_DIR_NATIVE}} && export SWIGLIBDIR || echo "No swig found"
+    type swig > /dev/null 2>&1 && SWIGLIBDIR=`swig -swiglib` && SWIGLIBDIR=`echo $SWIGLIBDIR | sed -e 's,.*'"${STAGING_DIR_NATIVE}"',,'` && export SWIGLIBDIR || echo "No swig found"
 }
 
 do_install_append() {
