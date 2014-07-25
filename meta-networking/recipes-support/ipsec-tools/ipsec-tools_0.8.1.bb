@@ -48,6 +48,8 @@ EXTRA_OECONF = "--with-kernel-headers=${STAGING_INCDIR} \
                 --without-libpam \
                 --disable-security-context \
                 --enable-shared \
+                --enable-dpd \
+                --enable-natt=yes \
                 ${@base_contains('DISTRO_FEATURES', 'ipv6', '--enable-ipv6=yes', '', d)}"
 
 # See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=530527
