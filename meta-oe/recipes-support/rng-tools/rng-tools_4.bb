@@ -15,12 +15,12 @@ inherit autotools update-rc.d
 do_install_append() {
     install -d "${D}${sysconfdir}/init.d"
     install -m 0755 ${WORKDIR}/init ${D}${sysconfdir}/init.d/rng-tools
-    sed -i -e 's,/etc/,${sysconfdir}/,' -e 's,/usr/sbin/,${sbindir},' \
+    sed -i -e 's,/etc/,${sysconfdir}/,' -e 's,/usr/sbin/,${sbindir}/,' \
         ${D}${sysconfdir}/init.d/rng-tools
 
     install -d "${D}${sysconfdir}/default"
-    install -m 0644 ${WORKDIR}/default ${D}${sysconfdir}/default
+    install -m 0644 ${WORKDIR}/default ${D}${sysconfdir}/rng-tools
 }
 
 INITSCRIPT_NAME = "rng-tools"
-INITSCRIPT_PARAMS = "defaults"
+INITSCRIPT_PARAMS = "start 30 S . stop 30 0 6 1 ."
