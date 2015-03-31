@@ -57,5 +57,8 @@ do_install() {
     install -m 0644 ${S}/doc/netperf_old.ps ${D}${docdir}/netperf
 }
 
+PACKAGECONFIG ??= "sctp"
+PACKAGECONFIG[sctp] = "--enable-sctp,,lksctp-tools,"
+
 INITSCRIPT_NAME="netperf"
 INITSCRIPT_PARAMS="defaults"
